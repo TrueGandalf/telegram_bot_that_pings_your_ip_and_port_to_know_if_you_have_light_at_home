@@ -1,0 +1,15 @@
+{
+	"profiles": {
+		"NotWebApp": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"DOTNET_ENVIRONMENT": "Development",
+				"bot_token": "---",
+				"ipToPing": "---",
+				"portToPing": "---",
+				"developerChatId": "---",
+				"groupChatId": "---"
+			}
+		}
+	}
+}
