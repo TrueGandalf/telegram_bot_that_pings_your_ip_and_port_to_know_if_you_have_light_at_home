@@ -17,6 +17,8 @@ namespace Telegram.Bot.Services
         private readonly int portToPing = Convert.ToInt32(Environment.GetEnvironmentVariable("portToPing"));
         private readonly long developerChatId = Convert.ToInt64(Environment.GetEnvironmentVariable("developerChatId"));
         private readonly long groupChatId = Convert.ToInt64(Environment.GetEnvironmentVariable("groupChatId"));
+        private readonly int failRecheckCount = Convert.ToInt32(Environment.GetEnvironmentVariable("failRecheckCount"));
+        
 
 
         public UpdateHandler(ITelegramBotClient botClient, ILogger<UpdateHandler> logger)
@@ -58,7 +60,7 @@ namespace Telegram.Bot.Services
             long groupChatId,
             bool? goalIsSuccessNotFail)
         {
-            var howManyTimesWeCheckForDisconnection = 1; 
+            var howManyTimesWeCheckForDisconnection = failRecheckCount; 
 
             if (goalIsSuccessNotFail == null)
             {
