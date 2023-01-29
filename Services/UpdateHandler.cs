@@ -24,28 +24,30 @@ namespace Telegram.Bot.Services
             _botClient = botClient;
             _logger = logger;
 
-            TextPingWhenForSuccessOrFail(ipToPing, portToPing, developerChatId, null);
+            TextPingWhenForSuccessOrFail(ipToPing, portToPing, developerChatId, groupChatId, null);
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
         {
-            var handler = update switch
-            {
-                // UpdateType.Unknown:
-                // UpdateType.ChannelPost:
-                // UpdateType.EditedChannelPost:
-                // UpdateType.ShippingQuery:
-                // UpdateType.PreCheckoutQuery:
-                // UpdateType.Poll:
-                { Message: { } message } => BotOnMessageReceived(message, cancellationToken),
-                { EditedMessage: { } message } => BotOnMessageReceived(message, cancellationToken),
-                { CallbackQuery: { } callbackQuery } => BotOnCallbackQueryReceived(callbackQuery, cancellationToken),
-                { InlineQuery: { } inlineQuery } => BotOnInlineQueryReceived(inlineQuery, cancellationToken),
-                { ChosenInlineResult: { } chosenInlineResult } => BotOnChosenInlineResultReceived(chosenInlineResult, cancellationToken),
-                _ => UnknownUpdateHandlerAsync(update, cancellationToken)
-            };
+            //var handler = update switch
+            //{
+            //    // UpdateType.Unknown:
+            //    // UpdateType.ChannelPost:
+            //    // UpdateType.EditedChannelPost:
+            //    // UpdateType.ShippingQuery:
+            //    // UpdateType.PreCheckoutQuery:
+            //    // UpdateType.Poll:
 
-            await handler;
+
+            //    { Message: { } message } => BotOnMessageReceived(message, cancellationToken),
+            //    { EditedMessage: { } message } => BotOnMessageReceived(message, cancellationToken),
+            //    { CallbackQuery: { } callbackQuery } => BotOnCallbackQueryReceived(callbackQuery, cancellationToken),
+            //    { InlineQuery: { } inlineQuery } => BotOnInlineQueryReceived(inlineQuery, cancellationToken),
+            //    { ChosenInlineResult: { } chosenInlineResult } => BotOnChosenInlineResultReceived(chosenInlineResult, cancellationToken),
+            //    _ => UnknownUpdateHandlerAsync(update, cancellationToken)
+            //};
+
+            //await handler;
 
         }
 
@@ -53,6 +55,7 @@ namespace Telegram.Bot.Services
             string ipToPing,
             int portToPing,
             long chatId,
+            long groupChatId,
             bool? goalIsSuccessNotFail)
         {
             var howManyTimesWeCheckForDisconnection = 1; 
@@ -71,16 +74,18 @@ namespace Telegram.Bot.Services
                 if (originalState == "success")
                 {
                     await SimpleReply(_botClient, chatId, "Світло є", true);
+                    await SimpleReply(_botClient, groupChatId, "Світло є", true);
                     goalIsSuccessNotFail = false;
                 }
                 else if (originalState == "fail")
                 {
                     await SimpleReply(_botClient, chatId, "Світла немає", true);
+                    await SimpleReply(_botClient, groupChatId, "Світла немає", true);
                     goalIsSuccessNotFail = true;
                 }
                 else
                 {
-                    await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, goalIsSuccessNotFail);
+                    await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, groupChatId, goalIsSuccessNotFail);
                     return;
                 }
 
@@ -105,21 +110,23 @@ namespace Telegram.Bot.Services
                 if (goal == "success")
                 {
                     await SimpleReply(_botClient, chatId, "Світло з'явилось!");
+                    await SimpleReply(_botClient, groupChatId, "Світло з'явилось!");
                 }
                 else if (goal == "fail")
                 {
                     await SimpleReply(_botClient, chatId, "Світло зникло!");
+                    await SimpleReply(_botClient, groupChatId, "Світло зникло!");
                 }
 
                 await Task.Delay(5000);
-                await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, !goalIsSuccessNotFail);
+                await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, groupChatId, !goalIsSuccessNotFail);
                 return;
             }
             else
             {
                 await Task.Delay(5000);//TODO: better to try to use timer instead of Thread.Sleep or Task.Delay. Mybe I can try to even use ihosted service
 
-                await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, goalIsSuccessNotFail);
+                await TextPingWhenForSuccessOrFail(ipToPing, portToPing, chatId, groupChatId, goalIsSuccessNotFail);
                 return;
             }
         }
