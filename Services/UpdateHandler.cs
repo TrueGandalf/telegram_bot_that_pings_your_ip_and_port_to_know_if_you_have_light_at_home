@@ -101,10 +101,18 @@ namespace Telegram.Bot.Services
             var isSucceded = "unknown";
             var count = 0;
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
             while (isSucceded != "success" && count < howManyTimesWeCheckForDisconnection)
             {
                 count++;
+
+                Console.WriteLine($"try for fail number {count} out of {howManyTimesWeCheckForDisconnection}");
+
                 isSucceded = getSitePingResult(ipToPing, portToPing);
+
+                watch.Stop();
+                Console.WriteLine($"this try took {watch.ElapsedMilliseconds} miliseconds");
             }
 
             if (isSucceded == goal)
@@ -156,7 +164,12 @@ namespace Telegram.Bot.Services
             }
             catch (SocketException ex)
             {
-                Console.WriteLine("fail");
+                Console.WriteLine("fail cause of SocketException");
+                return "fail";
+            }
+            catch
+            {
+                Console.WriteLine("fail cause of unknown exception");
                 return "fail";
             }
         }
