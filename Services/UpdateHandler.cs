@@ -60,14 +60,15 @@ namespace Telegram.Bot.Services
             long groupChatId,
             bool? goalIsSuccessNotFail)
         {
-            var howManyTimesWeCheckForDisconnection = failRecheckCount; 
+            var howManyMaxTimesWeCheckForDisconnection = failRecheckCount; 
 
             if (goalIsSuccessNotFail == null)
             {
                 var originalState = "unknown";
                 var originalCount = 0;
 
-                while (originalState != "success" && originalCount < howManyTimesWeCheckForDisconnection)
+                while (originalState != "success"
+                && originalCount < howManyMaxTimesWeCheckForDisconnection)
                 {
                     originalCount++;
                     originalState = getSitePingResult(ipToPing, portToPing);
@@ -102,17 +103,23 @@ namespace Telegram.Bot.Services
             var count = 0;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
+            long tryingTime = 0;
+            var maxTryingTime = 300000; //5 mins before we decide that there is no light
 
-            while (isSucceded != "success" && count < howManyTimesWeCheckForDisconnection)
+            while (isSucceded != "success"
+                //&& count < howManyMaxTimesWeCheckForDisconnection
+                && tryingTime < maxTryingTime)
             {
                 count++;
 
-                Console.WriteLine($"try for fail number {count} out of {howManyTimesWeCheckForDisconnection}");
+                Console.WriteLine($"try for fail number {count}");
 
                 isSucceded = getSitePingResult(ipToPing, portToPing);
 
                 watch.Stop();
+                tryingTime += watch.ElapsedMilliseconds;
                 Console.WriteLine($"this try took {watch.ElapsedMilliseconds} miliseconds");
+                Console.WriteLine($"all tries took {tryingTime} miliseconds out of {maxTryingTime}");
             }
 
             if (isSucceded == goal)
