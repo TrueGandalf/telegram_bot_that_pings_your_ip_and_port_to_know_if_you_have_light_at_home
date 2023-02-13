@@ -89,11 +89,11 @@ namespace Telegram.Bot.Services
             long groupChatId,
             bool? goalIsSuccessNotFail)
         {
+
+            Console.WriteLine("now we will create singleton (or get old one)");
             var ourMegaDb = StateFile.GetOrCreateSingleton();
+            Console.WriteLine("we got one");
 
-
-
-            
 
             if (goalIsSuccessNotFail == null)
             {
