@@ -141,21 +141,21 @@ namespace Telegram.Bot.Services
 
 
 
-
-
-            Console.WriteLine("Windows static file approach");
-            Console.WriteLine("Path_2");
-            string? txtFile = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "lastState.txt");
-            Console.WriteLine(System.IO.File.ReadAllText(txtFile));
-
-
+            string? txtFile;
 
             Console.WriteLine("Linux static file approach");
             Console.WriteLine("Path_3");
             txtFile = Path.Combine(
                 System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
+                "lastState.txt");
+            Console.WriteLine(System.IO.File.ReadAllText(txtFile));
+
+
+
+            Console.WriteLine("Windows static file approach");
+            Console.WriteLine("Path_2");
+            txtFile = Path.Combine(
+                Directory.GetCurrentDirectory(),
                 "lastState.txt");
             Console.WriteLine(System.IO.File.ReadAllText(txtFile));
 
