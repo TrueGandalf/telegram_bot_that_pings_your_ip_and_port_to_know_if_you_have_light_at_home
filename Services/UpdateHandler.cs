@@ -26,8 +26,16 @@ namespace Telegram.Bot.Services
         {
             _botClient = botClient;
             _logger = logger;
-
-            TextPingWhenForSuccessOrFail(ipToPing, portToPing, developerChatId, groupChatId, null);
+            try
+            {
+                TextPingWhenForSuccessOrFail(ipToPing, portToPing, developerChatId, groupChatId, null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("!!!big problem");
+                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
@@ -95,21 +103,41 @@ namespace Telegram.Bot.Services
             Console.WriteLine("we got one");
 
 
+            Console.WriteLine("goalIsSuccessNotFail");
+            Console.WriteLine(goalIsSuccessNotFail);
+
             if (goalIsSuccessNotFail == null)
             {
+
+                Console.WriteLine("aaa");
                 var originalState = ourMegaDb.StateWasSucces ? "success" : "fail";
+
+                Console.WriteLine("originalState");
+                Console.WriteLine(originalState);
+                Console.WriteLine("ourMegaDb");
+                Console.WriteLine(ourMegaDb);
+                Console.WriteLine("ourMegaDb.StateWasSucces");
+                Console.WriteLine(ourMegaDb.StateWasSucces);
+
+                Console.WriteLine("bbb");
 
                 if (originalState == "success")
                 {
                     await SimpleReply(_botClient, chatId, "Світло було", true);
                     await SimpleReply(_botClient, groupChatId, "Світло було", true);
+
+                    Console.WriteLine("1");
                     goalIsSuccessNotFail = false;
+                    Console.WriteLine("2");
                 }
                 else if (originalState == "fail")
                 {
                     await SimpleReply(_botClient, chatId, "Світла не було", true);
                     await SimpleReply(_botClient, groupChatId, "Світла не було", true);
+
+                    Console.WriteLine("3");
                     goalIsSuccessNotFail = true;
+                    Console.WriteLine("4");
                 }
                 else
                 {
