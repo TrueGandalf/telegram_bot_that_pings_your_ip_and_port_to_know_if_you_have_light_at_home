@@ -19,7 +19,7 @@ namespace Telegram.Bot.Services
         private readonly long developerChatId = Convert.ToInt64(Environment.GetEnvironmentVariable("developerChatId"));
         private readonly long groupChatId = Convert.ToInt64(Environment.GetEnvironmentVariable("groupChatId"));
         private readonly int failRecheckCount = Convert.ToInt32(Environment.GetEnvironmentVariable("failRecheckCount"));
-        
+
 
 
         public UpdateHandler(ITelegramBotClient botClient, ILogger<UpdateHandler> logger)
@@ -54,6 +54,34 @@ namespace Telegram.Bot.Services
 
         }
 
+        class StateFile
+        {
+            private string? TxtFile = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "lastState.txt");
+
+            private static StateFile OnlyOne;
+
+            private StateFile() { OnlyOne = this; }
+
+            public static StateFile GetOrCreateSingleton()
+            {
+                if (OnlyOne == null)
+                    OnlyOne = new StateFile();
+                return OnlyOne;
+            }
+
+            public bool StateWasSucces
+            {
+                get { return System.IO.File.ReadAllText(TxtFile) == "success"; }
+                set
+                {
+                    var savingValue = value ? "success" : "fail";
+                    System.IO.File.WriteAllText(TxtFile, savingValue);
+                }
+            }
+        }
+
         async Task TextPingWhenForSuccessOrFail(
             string ipToPing,
             int portToPing,
@@ -61,38 +89,26 @@ namespace Telegram.Bot.Services
             long groupChatId,
             bool? goalIsSuccessNotFail)
         {
-            var howManyMaxTimesWeCheckForDisconnection = failRecheckCount; 
+            var ourMegaDb = StateFile.GetOrCreateSingleton();
 
-            var currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var txtFile = Path.Combine(currentFolder, "lastState.txt");
-            System.IO.File.WriteAllText(txtFile, "veryGoodAndVeryNice 22222");
 
-            var lastState = System.IO.File.ReadAllText(txtFile);
 
-            Console.WriteLine(lastState);
+            
 
             if (goalIsSuccessNotFail == null)
             {
-                var originalState = "unknown";
-                var originalCount = 0;
-
-                while (originalState != "success"
-                && originalCount < howManyMaxTimesWeCheckForDisconnection)
-                {
-                    originalCount++;
-                    originalState = getSitePingResult(ipToPing, portToPing);
-                }
+                var originalState = ourMegaDb.StateWasSucces ? "success" : "fail";
 
                 if (originalState == "success")
                 {
-                    await SimpleReply(_botClient, chatId, "Світло є", true);
-                    await SimpleReply(_botClient, groupChatId, "Світло є", true);
+                    await SimpleReply(_botClient, chatId, "Світло було", true);
+                    await SimpleReply(_botClient, groupChatId, "Світло було", true);
                     goalIsSuccessNotFail = false;
                 }
                 else if (originalState == "fail")
                 {
-                    await SimpleReply(_botClient, chatId, "Світла немає", true);
-                    await SimpleReply(_botClient, groupChatId, "Світла немає", true);
+                    await SimpleReply(_botClient, chatId, "Світла не було", true);
+                    await SimpleReply(_botClient, groupChatId, "Світла не було", true);
                     goalIsSuccessNotFail = true;
                 }
                 else
@@ -106,7 +122,7 @@ namespace Telegram.Bot.Services
                 await SimpleReply(_botClient, chatId, message, true);
             }
 
-            var goal = (bool) goalIsSuccessNotFail ? "success" : "fail";       
+            var goal = (bool)goalIsSuccessNotFail ? "success" : "fail";
 
             var isSucceded = "unknown";
             var count = 0;
@@ -137,11 +153,13 @@ namespace Telegram.Bot.Services
                 {
                     await SimpleReply(_botClient, chatId, "Світло з'явилось!");
                     await SimpleReply(_botClient, groupChatId, "Світло з'явилось!");
+                    ourMegaDb.StateWasSucces = true;
                 }
                 else if (goal == "fail")
                 {
                     await SimpleReply(_botClient, chatId, "Світло зникло!");
                     await SimpleReply(_botClient, groupChatId, "Світло зникло!");
+                    ourMegaDb.StateWasSucces = false;
                 }
 
                 await Task.Delay(5000);
@@ -176,7 +194,7 @@ namespace Telegram.Bot.Services
             {
                 using (var client = new TcpClient(siteOrBotAdress, portToPing))
                     Console.WriteLine("success");
-                    return "success";                
+                return "success";
             }
             catch (SocketException ex)
             {
