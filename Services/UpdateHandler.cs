@@ -66,7 +66,7 @@ namespace Telegram.Bot.Services
         class StateFile
         {
             public string? TxtFile = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
                 "lastState.txt");
 
             private static StateFile OnlyOne;
@@ -143,6 +143,9 @@ namespace Telegram.Bot.Services
 
             string? txtFile;
 
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine("---------------------------------------");
             Console.WriteLine("Linux static file approach");
             Console.WriteLine("Path_3");
             txtFile = Path.Combine(
@@ -152,12 +155,12 @@ namespace Telegram.Bot.Services
 
 
 
-            Console.WriteLine("Windows static file approach");
-            Console.WriteLine("Path_2");
-            txtFile = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "lastState.txt");
-            Console.WriteLine(System.IO.File.ReadAllText(txtFile));
+            //Console.WriteLine("Windows static file approach");
+            //Console.WriteLine("Path_2");
+            //txtFile = Path.Combine(
+            //    Directory.GetCurrentDirectory(),
+            //    "lastState.txt");
+            //Console.WriteLine(System.IO.File.ReadAllText(txtFile));
 
 
 
