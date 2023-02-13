@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Reflection;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -61,6 +62,14 @@ namespace Telegram.Bot.Services
             bool? goalIsSuccessNotFail)
         {
             var howManyMaxTimesWeCheckForDisconnection = failRecheckCount; 
+
+            var currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var txtFile = Path.Combine(currentFolder, "lastState.txt");
+            System.IO.File.WriteAllText(txtFile, "veryGoodAndVeryNice 22222");
+
+            var lastState = System.IO.File.ReadAllText(txtFile);
+
+            Console.WriteLine(lastState);
 
             if (goalIsSuccessNotFail == null)
             {
