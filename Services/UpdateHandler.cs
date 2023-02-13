@@ -104,14 +104,63 @@ namespace Telegram.Bot.Services
             Console.WriteLine("we got one");
             Console.WriteLine("Path_1");
             Console.WriteLine(ourMegaDb.TxtFile);
-            Console.WriteLine("Path_2");
-            Console.WriteLine(Directory.GetCurrentDirectory());
+
+            DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); //Assuming Test is your Folder
+
+
+            foreach (FileInfo file in d.GetFiles())
+            {
+                Console.WriteLine(file.Name);
+            }
+
+
             Console.WriteLine("Path_3");
             Console.WriteLine(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)));
 
+            d = new DirectoryInfo(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))); //Assuming Test is your Folder
+
+
+            foreach (FileInfo file in d.GetFiles())
+            {
+                Console.WriteLine(file.Name);
+            }
 
             Console.WriteLine("goalIsSuccessNotFail");
             Console.WriteLine(goalIsSuccessNotFail);
+
+            Console.WriteLine("Path_2");
+            Console.WriteLine(Directory.GetCurrentDirectory());
+
+            d = new DirectoryInfo(Directory.GetCurrentDirectory()); //Assuming Test is your Folder
+
+
+            foreach (FileInfo file in d.GetFiles())
+            {
+                Console.WriteLine(file.Name);
+            }
+
+
+
+
+
+            Console.WriteLine("Windows static file approach");
+            Console.WriteLine("Path_2");
+            string? txtFile = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "lastState.txt");
+            Console.WriteLine(System.IO.File.ReadAllText(txtFile));
+
+
+
+            Console.WriteLine("Linux static file approach");
+            Console.WriteLine("Path_3");
+            txtFile = Path.Combine(
+                System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
+                "lastState.txt");
+            Console.WriteLine(System.IO.File.ReadAllText(txtFile));
+
+
+
 
             if (goalIsSuccessNotFail == null)
             {
