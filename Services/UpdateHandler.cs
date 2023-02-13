@@ -6,6 +6,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Telegram.Bot.Services
 {
@@ -64,7 +65,7 @@ namespace Telegram.Bot.Services
 
         class StateFile
         {
-            private string? TxtFile = Path.Combine(
+            public string? TxtFile = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "lastState.txt");
 
@@ -101,6 +102,12 @@ namespace Telegram.Bot.Services
             Console.WriteLine("now we will create singleton (or get old one)");
             var ourMegaDb = StateFile.GetOrCreateSingleton();
             Console.WriteLine("we got one");
+            Console.WriteLine("Path_1");
+            Console.WriteLine(ourMegaDb.TxtFile);
+            Console.WriteLine("Path_2");
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            Console.WriteLine("Path_3");
+            Console.WriteLine(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)));
 
 
             Console.WriteLine("goalIsSuccessNotFail");
