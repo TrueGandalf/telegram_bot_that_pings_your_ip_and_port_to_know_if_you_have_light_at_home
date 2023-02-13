@@ -70,7 +70,7 @@ namespace Telegram.Bot.Services
 
             private static StateFile OnlyOne;
 
-            private StateFile() { OnlyOne = this; }
+            private StateFile() {}
 
             public static StateFile GetOrCreateSingleton()
             {
