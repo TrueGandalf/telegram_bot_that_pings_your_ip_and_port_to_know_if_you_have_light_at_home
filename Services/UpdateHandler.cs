@@ -67,7 +67,7 @@ namespace Telegram.Bot.Services
         class StateFile
         {
             public string? TxtFile = Path.Combine(
-                System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
+                //System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
                 "lastState.txt");
 
             private static StateFile OnlyOne;
