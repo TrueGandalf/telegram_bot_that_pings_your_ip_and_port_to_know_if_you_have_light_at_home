@@ -151,11 +151,10 @@ namespace Telegram.Bot.Services
             Console.WriteLine("---------------------------------------");
             Console.WriteLine("Linux static file approach");
             Console.WriteLine("Path_3");
-            txtFile = Path.Combine(
-                System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
+            txtFile = Path.Combine(//System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
                 "lastState.txt");
             Console.WriteLine(txtFile);
-            Console.WriteLine("=>");
+            Console.WriteLine("");
             Console.WriteLine(System.IO.File.ReadAllText(txtFile));
 
 
