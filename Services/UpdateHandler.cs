@@ -154,6 +154,8 @@ namespace Telegram.Bot.Services
             txtFile = Path.Combine(
                 System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
                 "lastState.txt");
+            Console.WriteLine(txtFile);
+            Console.WriteLine("=>");
             Console.WriteLine(System.IO.File.ReadAllText(txtFile));
 
 
