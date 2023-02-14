@@ -7,6 +7,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 using static System.Net.Mime.MediaTypeNames;
+using File = System.IO.File;
 
 namespace Telegram.Bot.Services
 {
@@ -145,14 +146,21 @@ namespace Telegram.Bot.Services
 
 
             string? txtFile;
+            txtFile = Path.Combine(//System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
+                "lastState.txt");
 
             Console.WriteLine("---------------------------------------");
+            if (!File.Exists(txtFile))
+            {
+
+                Console.WriteLine("writing some bad news to file");
+                System.IO.File.WriteAllText(txtFile, "some bad news");
+            }
+
             Console.WriteLine("---------------------------------------");
             Console.WriteLine("---------------------------------------");
             Console.WriteLine("Linux static file approach");
             Console.WriteLine("Path_3");
-            txtFile = Path.Combine(//System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
-                "lastState.txt");
             Console.WriteLine(txtFile);
             Console.WriteLine("");
             Console.WriteLine(System.IO.File.ReadAllText(txtFile));
