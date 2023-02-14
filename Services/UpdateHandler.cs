@@ -102,42 +102,45 @@ namespace Telegram.Bot.Services
             Console.WriteLine("now we will create singleton (or get old one)");
             var ourMegaDb = StateFile.GetOrCreateSingleton();
             Console.WriteLine("we got one");
-            Console.WriteLine("Path_1");
-            Console.WriteLine(ourMegaDb.TxtFile);
-
-            DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); //Assuming Test is your Folder
 
 
-            foreach (FileInfo file in d.GetFiles())
-            {
-                Console.WriteLine(file.Name);
-            }
+
+            //Console.WriteLine("Path_1");
+            //Console.WriteLine(ourMegaDb.TxtFile);
+
+            //DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); //Assuming Test is your Folder
 
 
-            Console.WriteLine("Path_3");
-            Console.WriteLine(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)));
-
-            d = new DirectoryInfo(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))); //Assuming Test is your Folder
-
-
-            foreach (FileInfo file in d.GetFiles())
-            {
-                Console.WriteLine(file.Name);
-            }
-
-            Console.WriteLine("goalIsSuccessNotFail");
-            Console.WriteLine(goalIsSuccessNotFail);
-
-            Console.WriteLine("Path_2");
-            Console.WriteLine(Directory.GetCurrentDirectory());
-
-            d = new DirectoryInfo(Directory.GetCurrentDirectory()); //Assuming Test is your Folder
+            //foreach (FileInfo file in d.GetFiles())
+            //{
+            //    Console.WriteLine(file.Name);
+            //}
 
 
-            foreach (FileInfo file in d.GetFiles())
-            {
-                Console.WriteLine(file.Name);
-            }
+            //Console.WriteLine("Path_3");
+            //Console.WriteLine(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)));
+
+            //d = new DirectoryInfo(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))); //Assuming Test is your Folder
+
+
+            //foreach (FileInfo file in d.GetFiles())
+            //{
+            //    Console.WriteLine(file.Name);
+            //}
+
+            //Console.WriteLine("goalIsSuccessNotFail");
+            //Console.WriteLine(goalIsSuccessNotFail);
+
+            //Console.WriteLine("Path_2");
+            //Console.WriteLine(Directory.GetCurrentDirectory());
+
+            //d = new DirectoryInfo(Directory.GetCurrentDirectory()); //Assuming Test is your Folder
+
+
+            //foreach (FileInfo file in d.GetFiles())
+            //{
+            //    Console.WriteLine(file.Name);
+            //}
 
 
 
